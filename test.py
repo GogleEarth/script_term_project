@@ -5,13 +5,13 @@ import urllib.request
 import urllib.parse
 from xml.dom.minidom import parseString
 
-service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
+def realtime_search():
 
-while(True):
+    service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
+
     station_name = str(input('측정소 이름 : '))
     #city_name = str(input('도시이름 : '))
-
-    url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey="+service_key+"&numOfRows=10&pageSize=10&pageNo=1&startPage=1&stationName="+urllib.parse.quote(station_name)+"&dataTerm=DAILY&ver=1.3"
+    url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey="+service_key+"&numOfRows=24&pageSize=24&pageNo=1&startPage=1&stationName="+urllib.parse.quote(station_name)+"&dataTerm=DAILY&ver=1.3"
     #url2 = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?serviceKey="+service_key+"&numOfRows=10&pageSize=10&pageNo=1&startPage=1&sidoName="+urllib.parse.quote(city_name)+"&ver=1.3"
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
@@ -39,8 +39,8 @@ while(True):
                     no2 = data.firstChild.data
                     print('이산화질소 : ', no2, 'ppm')
                 if data.nodeName == 'o3Value':
-                    o3 = data.firstChild.data
-                    print('오존 : ',o3,'ppm')
+                     o3 = data.firstChild.data
+                     print('오존 : ',o3,'ppm')
                 if data.nodeName == 'pm10Value':
                     pm10 = data.firstChild.data
                     print('미세먼지 : ',pm10,'㎍/㎥')
