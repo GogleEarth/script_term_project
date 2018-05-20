@@ -1,6 +1,3 @@
-
-import os
-import sys
 from data import *
 import urllib.request
 import urllib.parse
