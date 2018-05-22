@@ -5,12 +5,12 @@
 class data:
     def __init__(self,station,time,so2,co,o3,no2,pm10,pm25):
         self.station = station
-        self.so2 = so2
-        self.co = co
-        self.o3 = o3
-        self.no2 = no2
-        self.pm10 = pm10
-        self.pm25 = pm25
+        self.so2 = float(so2)
+        self.co = float(co)
+        self.o3 = float(o3)
+        self.no2 = float(no2)
+        self.pm10 = int(pm10)
+        self.pm25 = int(pm25)
         self.year = str(time[0]+time[1]+time[2]+time[3])
         self.month = str(time[5]+time[6])
         self.date = str(time[8]+time[9])
@@ -25,3 +25,20 @@ class data:
         print('미세먼지 : ', self.pm10, '㎍/㎥')
         print('초미세먼지 : ', self.pm25, '㎍/㎥\n')
 
+    def print_data_dayaver(self):
+        print(self.station,'의 ',self.year,'-',self.month,'-',self.date,'일 평균 대기 현황')
+        print('이산화황 : ', self.so2, 'ppm')
+        print('일산화탄소 : ', self.co, 'ppm')
+        print('이산화질소 : ', self.no2, 'ppm')
+        print('오존 : ', self.o3, 'ppm')
+        print('미세먼지 : ', self.pm10, '㎍/㎥')
+        print('초미세먼지 : ', self.pm25, '㎍/㎥\n')
+
+    def print_data_monthaver(self):
+        print(self.station,'의 ',self.year,'-',self.month,'월 평균 대기 현황')
+        print('이산화황 : ', self.so2, 'ppm')
+        print('일산화탄소 : ', self.co, 'ppm')
+        print('이산화질소 : ', self.no2, 'ppm')
+        print('오존 : ', self.o3, 'ppm')
+        print('미세먼지 : ', self.pm10, '㎍/㎥')
+        print('초미세먼지 : ', self.pm25, '㎍/㎥\n')

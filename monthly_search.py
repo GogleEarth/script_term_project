@@ -29,17 +29,35 @@ def monthly_search(service_key,databaseformonth,station_name):
                 if info.nodeName == 'dataTime':
                     time = str(info.firstChild.data)
                 if info.nodeName == 'so2Value':
-                    so2 = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        so2 = 0
+                    else:
+                        so2 = str(info.firstChild.data)
                 if info.nodeName == 'coValue':
-                    co = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        co = 0
+                    else:
+                        co = str(info.firstChild.data)
                 if info.nodeName == 'no2Value':
-                    no2 = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        no2 = 0
+                    else:
+                        no2 = str(info.firstChild.data)
                 if info.nodeName == 'o3Value':
-                    o3 = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        o3 = 0
+                    else:
+                        o3 = str(info.firstChild.data)
                 if info.nodeName == 'pm10Value':
-                    pm10 = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        pm10 = 0
+                    else:
+                        pm10 = str(info.firstChild.data)
                 if info.nodeName == 'pm25Value':
-                    pm25 = str(info.firstChild.data)
+                    if info.firstChild.data == '-':
+                        pm25 = 0
+                    else:
+                        pm25 = str(info.firstChild.data)
                     newdata = data(station_name, time, so2, co, o3, no2, pm10, pm25)
                     databaseformonth.append(newdata)
 

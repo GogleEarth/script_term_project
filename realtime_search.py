@@ -24,24 +24,45 @@ def realtime_search(service_key,station_name):
         o3 = ''
         pm10 = ''
         pm25 = ''
-        for item in ele:
-            for info in item.childNodes:
-                if info.nodeName == 'dataTime':
-                    time = str(info.firstChild.data)
-                if info.nodeName == 'so2Value':
-                    so2 = str(info.firstChild.data)
-                if info.nodeName == 'coValue':
-                    co = str(info.firstChild.data)
-                if info.nodeName == 'no2Value':
-                    no2 = str(info.firstChild.data)
-                if info.nodeName == 'o3Value':
-                    o3 = str(info.firstChild.data)
-                if info.nodeName == 'pm10Value':
-                    pm10 = str(info.firstChild.data)
-                if info.nodeName == 'pm25Value':
-                    pm25 = str(info.firstChild.data)
-
-        newdata = data(station_name,time,so2,co,o3,no2,pm10,pm25)
-        newdata.print_data()
+        if len(ele) > 0:
+            for item in ele:
+                for info in item.childNodes:
+                    if info.nodeName == 'dataTime':
+                        time = str(info.firstChild.data)
+                    if info.nodeName == 'so2Value':
+                        if info.firstChild.data == '-':
+                            so2 = 0
+                        else:
+                            so2 = str(info.firstChild.data)
+                    if info.nodeName == 'coValue':
+                        if info.firstChild.data == '-':
+                            co = 0
+                        else:
+                            co = str(info.firstChild.data)
+                    if info.nodeName == 'no2Value':
+                        if info.firstChild.data == '-':
+                            no2 = 0
+                        else:
+                            no2 = str(info.firstChild.data)
+                    if info.nodeName == 'o3Value':
+                        if info.firstChild.data == '-':
+                            o3 = 0
+                        else:
+                            o3 = str(info.firstChild.data)
+                    if info.nodeName == 'pm10Value':
+                        if info.firstChild.data == '-':
+                            pm10 = 0
+                        else:
+                            pm10 = str(info.firstChild.data)
+                    if info.nodeName == 'pm25Value':
+                        if info.firstChild.data == '-':
+                            pm25 = 0
+                        else:
+                            pm25 = str(info.firstChild.data)
+                newdata = data(station_name,time,so2,co,o3,no2,pm10,pm25)
+                newdata.print_data()
+                return
+        else:
+            print("데이터가 없습니다.")
     else:
         print("에러 코드 : " + str(rescode))
