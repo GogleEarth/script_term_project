@@ -5,7 +5,7 @@ import urllib.parse
 from xml.dom.minidom import parseString
 
 def badair_search(service_key,database):
-    url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getUnityAirEnvrnIdexSnstiveAboveMsrstnList?serviceKey=" + service_key + "&numOfRows=10&pageSize=10&pageNo=1&startPage=1"
+    url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getUnityAirEnvrnIdexSnstiveAboveMsrstnList?serviceKey=" + service_key + "&numOfRows=400&pageSize=400&pageNo=1&startPage=1"
 
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
