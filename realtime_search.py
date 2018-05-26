@@ -3,8 +3,7 @@ import urllib.request
 import urllib.parse
 from xml.dom.minidom import parseString
 
-def realtime_search(service_key,station_name):
-
+def realtime_search(service_key,station_name,database):
     url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey="+service_key+"&numOfRows=1&pageSize=1&pageNo=1&startPage=1&stationName="+urllib.parse.quote(station_name)+"&dataTerm=DAILY&ver=1.3"
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
@@ -59,10 +58,8 @@ def realtime_search(service_key,station_name):
                             pm25 = 0
                         else:
                             pm25 = str(info.firstChild.data)
-                newdata = data(station_name,time,so2,co,o3,no2,pm10,pm25)
-                newdata.print_data()
+                newdata = data(station_name, time, so2, co, o3, no2, pm10, pm25)
+                database.append(newdata)
                 return
-        else:
-            print("데이터가 없습니다.")
     else:
         print("에러 코드 : " + str(rescode))

@@ -4,7 +4,7 @@ import urllib.parse
 from xml.dom.minidom import parseString
 
 
-def monthly_search(service_key,databaseformonth,station_name):
+def monthly_search(service_key,station_name,databaseformonth):
     url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey="+service_key+"&numOfRows=2136&pageSize=2136&pageNo=1&startPage=1&stationName="+urllib.parse.quote(station_name)+"&dataTerm=3MONTH&ver=1.3"
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
