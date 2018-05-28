@@ -20,7 +20,7 @@ class data:
 
     def print_data(self,RenderText):
         RenderText.insert(INSERT,self.year + '년 ' + self.month + '월 ' + self.date + '일 ' + self.hour + '시 ' +  self.station + '의 대기 현황\n')
-        RenderText.insert(INSERT,'이산화황 : ' + str(self.so2) + 'ppm\n')
+        RenderText.insert(INSERT,'아황산 : ' + str(self.so2) + 'ppm\n')
         RenderText.insert(INSERT,'일산화탄소 : ' + str(self.co) + 'ppm\n')
         RenderText.insert(INSERT,'오존 : ' + str(self.o3) + 'ppm\n')
         RenderText.insert(INSERT,'이산화질소 : ' + str(self.no2) + 'ppm\n')
@@ -29,7 +29,7 @@ class data:
 
     def print_data_dayaver(self,RenderText):
         RenderText.insert(INSERT, self.year + '년 ' + self.month + '월 ' + self.date + '일 ' + self.station + '의 일 평균 대기 현황\n')
-        RenderText.insert(INSERT, '이산화황 : {0:.3f} ppm\n'.format(self.so2))
+        RenderText.insert(INSERT, '아황산 : {0:.3f} ppm\n'.format(self.so2))
         RenderText.insert(INSERT, '일산화탄소 : {0:.3f} ppm\n'.format(self.co))
         RenderText.insert(INSERT, '오존 : {0:.3f} ppm\n'.format(self.o3))
         RenderText.insert(INSERT, '이산화질소 : {0:.3f} ppm\n'.format(self.no2))
@@ -38,7 +38,7 @@ class data:
 
     def print_data_monthaver(self,RenderText):
         RenderText.insert(INSERT, self.year + '년 ' + self.month + '월 ' + self.station + '의 월 평균 대기 현황\n')
-        RenderText.insert(INSERT, '이산화황 : {0:.3f} ppm\n'.format(self.so2))
+        RenderText.insert(INSERT, '아황산 : {0:.3f} ppm\n'.format(self.so2))
         RenderText.insert(INSERT, '일산화탄소 : {0:.3f} ppm\n'.format(self.co))
         RenderText.insert(INSERT, '오존 : {0:.3f} ppm\n'.format(self.o3))
         RenderText.insert(INSERT, '이산화질소 : {0:.3f} ppm\n'.format(self.no2))
