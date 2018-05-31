@@ -45,51 +45,51 @@ def drawgraph(canvas,data):
     frame2 = Frame(window, width=600, height=600)
     frame2.pack(side='right')
     frame2.propagate(0)
+
     canvas = Canvas(frame2, width=540, height=400, bg='white', borderwidth='10', relief='ridge')
     canvas.pack()
     canvas.place(x=10, y=10)
 
-    if frame_on:
-        NameFont = font.Font(frame2, size=25, weight='bold', family='Consolas')
-        namelabel = Label(frame2, font=NameFont, text=data.station+'의 대기 현황 그래프')
-        namelabel.pack()
-        namelabel.place(x=30, y=500)
+    NameFont = font.Font(frame2, size=25, weight='bold', family='Consolas')
+    namelabel = Label(frame2, font=NameFont, text=data.station+'의 대기 현황 그래프')
+    namelabel.pack()
+    namelabel.place(x=30, y=500)
 
-        so2coord = 55,400,55,400-data.so2*100
-        so2line = canvas.create_line(so2coord, width=15, fill='red')
-        so2valuelabel = Label(canvas, font=TempFont, text=data.so2)
-        so2valuelabel.pack()
-        so2valuelabel.place(x=30, y=400-data.so2*100-30)
+    so2coord = 55,400,55,400-data.so2*100
+    so2line = canvas.create_line(so2coord, width=15, fill='red')
+    so2valuelabel = Label(canvas, font=TempFont, text=data.so2)
+    so2valuelabel.pack()
+    so2valuelabel.place(x=30, y=400-data.so2*100-30)
 
-        cocoord = 145,400,145,400-data.co*100
-        coline = canvas.create_line(cocoord, width=15, fill='red')
-        covaluelabel = Label(canvas, font=TempFont, text=data.co)
-        covaluelabel.pack()
-        covaluelabel.place(x=125, y=400-data.co*100-30)
+    cocoord = 145,400,145,400-data.co*100
+    coline = canvas.create_line(cocoord, width=15, fill='red')
+    covaluelabel = Label(canvas, font=TempFont, text=data.co)
+    covaluelabel.pack()
+    covaluelabel.place(x=125, y=400-data.co*100-30)
 
-        o3coord = 235,400,235,400-data.o3*100
-        o3line = canvas.create_line(o3coord, width=15, fill='red')
-        o3valuelabel = Label(canvas, font=TempFont, text=data.o3)
-        o3valuelabel.pack()
-        o3valuelabel.place(x=210, y=400-data.o3*100-30)
+    o3coord = 235,400,235,400-data.o3*100
+    o3line = canvas.create_line(o3coord, width=15, fill='red')
+    o3valuelabel = Label(canvas, font=TempFont, text=data.o3)
+    o3valuelabel.pack()
+    o3valuelabel.place(x=210, y=400-data.o3*100-30)
 
-        no2coord = 325,400,325,400-data.no2*100
-        no2line = canvas.create_line(no2coord, width=15, fill='red')
-        no2valuelabel = Label(canvas, font=TempFont, text=data.no2)
-        no2valuelabel.pack()
-        no2valuelabel.place(x=300, y=400-data.no2*100-30)
+    no2coord = 325,400,325,400-data.no2*100
+    no2line = canvas.create_line(no2coord, width=15, fill='red')
+    no2valuelabel = Label(canvas, font=TempFont, text=data.no2)
+    no2valuelabel.pack()
+    no2valuelabel.place(x=300, y=400-data.no2*100-30)
 
-        pm10coord = 415,400,415,400-data.pm10
-        pm10line = canvas.create_line(pm10coord, width=15, fill='red')
-        pm10valuelabel = Label(canvas, font=TempFont, text=data.pm10)
-        pm10valuelabel.pack()
-        pm10valuelabel.place(x=405, y=400-data.pm10-30)
+    pm10coord = 415,400,415,400-data.pm10
+    pm10line = canvas.create_line(pm10coord, width=15, fill='red')
+    pm10valuelabel = Label(canvas, font=TempFont, text=data.pm10)
+    pm10valuelabel.pack()
+    pm10valuelabel.place(x=405, y=400-data.pm10-30)
 
-        pm25coord = 505,400,505,400-data.pm25
-        pm25line = canvas.create_line(pm25coord, width=15, fill='red')
-        pm25valuelabel = Label(canvas, font=TempFont, text=data.pm25)
-        pm25valuelabel.pack()
-        pm25valuelabel.place(x=495, y=400-data.pm25-30)
+    pm25coord = 505,400,505,400-data.pm25
+    pm25line = canvas.create_line(pm25coord, width=15, fill='red')
+    pm25valuelabel = Label(canvas, font=TempFont, text=data.pm25)
+    pm25valuelabel.pack()
+    pm25valuelabel.place(x=495, y=400-data.pm25-30)
 
     so2label = Label(canvas, font=TempFont, text='아황산')
     so2label.pack()

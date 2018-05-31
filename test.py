@@ -1,35 +1,32 @@
 from tkinter import *
 
-
-frame_on = False
-
-def com():
-    global frame_on
-    if not frame_on:
-        frame_on = True
-    else:
-        frame_on = False
-
-    if frame_on:
-        window.geometry("800x600")
-        frame2 = Frame(window, bg='blue', width=400, height=600)
-        frame2.pack(side='right')
-    else:
-        window.geometry("400x600")
-
-
 window = Tk()
 window.title("name")
 window.geometry("400x600")
 
+frame = Frame(window, width=600, height=600)
+frame.pack()
 
-frame1 = Frame(window,bg='red',width=400,height=600)
-frame1.pack(side='left')
-frame1.propagate(0)
+canvas = Canvas(frame, width=355, height=555, bg='white', borderwidth='10', relief='ridge')
+canvas.pack()
+canvas.place(x=10, y=10)
 
-button = Button(frame1, text='click',command=com)
-button.pack()
+grape_coord1 = 55,570,55,570-150
+grape1 = canvas.create_line(grape_coord1, width=15, fill='red')
 
+grape_coord2 = 110,570,110,570-200
+grape2 = canvas.create_line(grape_coord2, width=15, fill='blue')
 
+grape_coord3 = 165,570,165,570-100
+grape3 = canvas.create_line(grape_coord3, width=15, fill='yellow')
+
+grape_coord4 = 220,570,220,570-50
+grape4 = canvas.create_line(grape_coord4, width=15, fill='green')
+
+grape_coord5 = 275,570,275,570-500
+grape5 = canvas.create_line(grape_coord5, width=15, fill='pink')
+
+grape_coord6 = 330,570,330,570-350
+grape6 = canvas.create_line(grape_coord6, width=15, fill='black')
 
 window.mainloop()
