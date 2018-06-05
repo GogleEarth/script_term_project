@@ -4,12 +4,17 @@ from data import *
 import realtime_search
 import monthly_search
 import badair_search
+from sendmail import *
 
 window = Tk()
 window.title("대기 현황 APP")
 window.geometry("400x600")
 service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
+senderAddr = "dkekfps1@gmail.com"
+password = "ss073508!!"
 database = []
+maildatalist = []
+mailflag = 0
 Days = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
 frame_on = False
 
@@ -56,25 +61,25 @@ def drawgraph(canvas,data):
     namelabel.place(x=30, y=500)
 
     so2coord = 55,400,55,400-data.so2*100
-    so2line = canvas.create_line(so2coord, width=15, fill='red')
+    so2line = canvas.create_line(so2coord, width=15, fill='yellow')
     so2valuelabel = Label(canvas, font=TempFont, text=data.so2)
     so2valuelabel.pack()
     so2valuelabel.place(x=30, y=400-data.so2*100-30)
 
     cocoord = 145,400,145,400-data.co*100
-    coline = canvas.create_line(cocoord, width=15, fill='red')
+    coline = canvas.create_line(cocoord, width=15, fill='yellow')
     covaluelabel = Label(canvas, font=TempFont, text=data.co)
     covaluelabel.pack()
     covaluelabel.place(x=125, y=400-data.co*100-30)
 
     o3coord = 235,400,235,400-data.o3*100
-    o3line = canvas.create_line(o3coord, width=15, fill='red')
+    o3line = canvas.create_line(o3coord, width=15, fill='yellow')
     o3valuelabel = Label(canvas, font=TempFont, text=data.o3)
     o3valuelabel.pack()
     o3valuelabel.place(x=210, y=400-data.o3*100-30)
 
     no2coord = 325,400,325,400-data.no2*100
-    no2line = canvas.create_line(no2coord, width=15, fill='red')
+    no2line = canvas.create_line(no2coord, width=15, fill='yellow')
     no2valuelabel = Label(canvas, font=TempFont, text=data.no2)
     no2valuelabel.pack()
     no2valuelabel.place(x=300, y=400-data.no2*100-30)
@@ -185,7 +190,7 @@ def InitTopText():
     MainText.place(x=60)
 
 def InitInputLabel():
-    global NameLabel,MonthLabel,TypeLabel
+    global NameLabel,MonthLabel,TypeLabel, AddrLabel
 
     TempFont = font.Font(frame1, size=15, weight='bold', family = 'Consolas')
     Text = Label(frame1, font=TempFont, text='측정소\n입력')
@@ -209,11 +214,24 @@ def InitInputLabel():
     TypeLabel.pack()
     TypeLabel.place(x=150, y=200)
 
+    Text = Label(frame1, font=TempFont, text='메일 주소')
+    Text.pack()
+    Text.place(x=15,y=260)
+    AddrLabel = Entry(frame1, width=20, borderwidth=10, relief='ridge')
+    AddrLabel.pack()
+    AddrLabel.place(x=110, y=255)
+
 def InitSearchButton():
     TempFont = font.Font(frame1, size=12, weight='bold', family = 'Consolas')
     SearchButton = Button(frame1, font = TempFont, text="검색",command = SearchButtonAction)
     SearchButton.pack()
     SearchButton.place(x=330, y=106)
+
+def InitMailButton():
+    TempFont = font.Font(frame1, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(frame1, font = TempFont, text="메일보내기",command = MailButtonAction)
+    SearchButton.pack()
+    SearchButton.place(x=280, y=260)
 
 def RenderReady_realtime(database):
     if len(database):
@@ -272,35 +290,53 @@ def InitSearchListBox():
     ListBoxScrollbar.config(command=SearchListBox.yview)
 
 def SearchButtonAction():
-    global SearchListBox,canvas
+    global SearchListBox,canvas,maildatalist,mailflag
 
     RenderText.configure(state='normal')
     RenderText.delete(0.0, END)
     Index = SearchListBox.curselection()[0]
     if Index == 0:
+        mailflag = 0
+        maildatalist.clear()
         realtime_search.realtime_search(service_key,NameLabel.get(),database)
         RenderReady_realtime(database)
         data = database[0]
+        maildatalist.append(data)
         drawgraph(canvas,data)
     elif Index == 1:
         newlist = []
+        maildatalist.clear()
         monthly_search.monthly_search(service_key,NameLabel.get(),database)
         if TypeLabel.get() == '시':
+            mailflag = 1
             RenderReady_time(database,MonthLabel.get())
+            for data in newlist:
+                if data.month == MonthLabel.get():
+                    maildatalist.append(data)
         elif TypeLabel.get() == '일':
+            mailflag = 2
             newlist = day_devide(database,MonthLabel.get())
+            for data in newlist:
+                maildatalist.append(data)
             RenderReady_day(newlist)
         elif TypeLabel.get() == '월':
-            RenderReady_month(month_devide(database,MonthLabel.get()))
+            mailflag = 3
+            data = month_devide(database,MonthLabel.get())
+            maildatalist.append(data)
+            RenderReady_month(data)
     elif Index == 2:
+        mailflag = 4
+        maildatalist.clear()
         badair_search.badair_search(service_key,database)
         newdb = []
         for name in database:
             realtime_search.realtime_search(service_key,name,newdb)
         RenderReady_realtime(newdb)
+        for data in newdb:
+            maildatalist.append(data)
+
 
     database.clear()
-    print(len(database))
     RenderText.configure(state='disabled')
 
 def InitShowGraphButton():
@@ -309,9 +345,19 @@ def InitShowGraphButton():
     button.pack()
     button.place(x=290, y=160)
 
+def MailButtonAction():
+    global maildatalist,mailflag
+    if len(maildatalist) > 0:
+        sendmail(senderAddr,password,AddrLabel.get(),maildatalist,mailflag)
+
+    else:
+        print('nodata')
+
+
 InitTopText()
 InitInputLabel()
 InitSearchButton()
+InitMailButton()
 InitRenderText()
 InitSearchListBox()
 InitShowGraphButton()

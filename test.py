@@ -1,32 +1,9 @@
-from tkinter import *
+import telepot
+from urllib.request import urlopen
+bot = telepot.Bot('607591452:AAGZfZpQ8H0GpHNI6vDA9cg6uY5uQDA7brU')
+#bot.sendMessage('525600178','안녕하슈')
 
-window = Tk()
-window.title("name")
-window.geometry("400x600")
+url = 'http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcRHTrade?serviceKey=sea100UMmw23Xycs33F1EQnumONR%2F9ElxBLzkilU9Yr1oT4TrCot8Y2p0jyuJP72x9rG9D8CN5yuEs6AS2sAiw%3D%3D&LAWD_CD=11110&DEAL_YMD=201712'
+response = urlopen(url).read()
+print(response)
 
-frame = Frame(window, width=600, height=600)
-frame.pack()
-
-canvas = Canvas(frame, width=355, height=555, bg='white', borderwidth='10', relief='ridge')
-canvas.pack()
-canvas.place(x=10, y=10)
-
-grape_coord1 = 55,570,55,570-150
-grape1 = canvas.create_line(grape_coord1, width=15, fill='red')
-
-grape_coord2 = 110,570,110,570-200
-grape2 = canvas.create_line(grape_coord2, width=15, fill='blue')
-
-grape_coord3 = 165,570,165,570-100
-grape3 = canvas.create_line(grape_coord3, width=15, fill='yellow')
-
-grape_coord4 = 220,570,220,570-50
-grape4 = canvas.create_line(grape_coord4, width=15, fill='green')
-
-grape_coord5 = 275,570,275,570-500
-grape5 = canvas.create_line(grape_coord5, width=15, fill='pink')
-
-grape_coord6 = 330,570,330,570-350
-grape6 = canvas.create_line(grape_coord6, width=15, fill='black')
-
-window.mainloop()
