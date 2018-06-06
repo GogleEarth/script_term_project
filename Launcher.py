@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import font
 from data import *
 import realtime_search
@@ -8,39 +9,27 @@ from sendmail import *
 
 window = Tk()
 window.title("대기 현황 APP")
-window.geometry("400x600")
+window.geometry("1000x600")
+window.resizable(False, False)
+
 service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
 senderAddr = "dkekfps1@gmail.com"
 password = "ss073508!!"
+
 database = []
 maildatalist = []
 mailflag = 0
 Days = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
-frame_on = False
+monthlyflag = 2
 
-frame1 = Frame(window, width=400, height=600)
-frame1.pack(side='left')
-frame1.propagate(0)
 
-frame2 = Frame(window, width=600, height=600)
+frame2 = Frame(window, width=580, height=600)
 frame2.pack(side='right')
 frame2.propagate(0)
 
 canvas = Canvas(frame2, width=540, height=400, bg='white', borderwidth='10', relief='ridge')
 canvas.pack()
-canvas.place(x=10, y=10)
-
-def show_graph():
-    global frame_on
-    if not frame_on:
-        frame_on = True
-    else:
-        frame_on = False
-
-    if frame_on:
-        window.geometry("1000x600")
-    else:
-        window.geometry("400x600")
+canvas.place(x=0, y=10)
 
 def drawgraph(canvas,data):
     global frame_on,frame2
@@ -60,29 +49,29 @@ def drawgraph(canvas,data):
     namelabel.pack()
     namelabel.place(x=30, y=500)
 
-    so2coord = 55,400,55,400-data.so2*100
+    so2coord = 55,400,55,400-data.so2*3000
     so2line = canvas.create_line(so2coord, width=15, fill='yellow')
-    so2valuelabel = Label(canvas, font=TempFont, text=data.so2)
+    so2valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.so2))
     so2valuelabel.pack()
-    so2valuelabel.place(x=30, y=400-data.so2*100-30)
+    so2valuelabel.place(x=30, y=400-data.so2*3000-30)
 
-    cocoord = 145,400,145,400-data.co*100
+    cocoord = 145,400,145,400-data.co*300
     coline = canvas.create_line(cocoord, width=15, fill='yellow')
-    covaluelabel = Label(canvas, font=TempFont, text=data.co)
+    covaluelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.co))
     covaluelabel.pack()
-    covaluelabel.place(x=125, y=400-data.co*100-30)
+    covaluelabel.place(x=125, y=400-data.co*300-30)
 
-    o3coord = 235,400,235,400-data.o3*100
+    o3coord = 235,400,235,400-data.o3*3000
     o3line = canvas.create_line(o3coord, width=15, fill='yellow')
-    o3valuelabel = Label(canvas, font=TempFont, text=data.o3)
+    o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.so2))
     o3valuelabel.pack()
-    o3valuelabel.place(x=210, y=400-data.o3*100-30)
+    o3valuelabel.place(x=210, y=400-data.o3*3000-30)
 
-    no2coord = 325,400,325,400-data.no2*100
+    no2coord = 325,400,325,400-data.no2*3000
     no2line = canvas.create_line(no2coord, width=15, fill='yellow')
-    no2valuelabel = Label(canvas, font=TempFont, text=data.no2)
+    no2valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.no2))
     no2valuelabel.pack()
-    no2valuelabel.place(x=300, y=400-data.no2*100-30)
+    no2valuelabel.place(x=300, y=400-data.no2*3000-30)
 
     pm10coord = 415,400,415,400-data.pm10
     pm10line = canvas.create_line(pm10coord, width=15, fill='red')
@@ -184,182 +173,282 @@ def day_devide(database,month):
     return res
 
 def InitTopText():
-    TempFont = font.Font(frame1, size=20, weight='bold', family='consolas')
-    MainText = Label(frame1, font=TempFont, text='[대기 현황 검색 APP]')
+    TempFont = font.Font(window, size=20, weight='bold', family='consolas')
+    MainText = Label(window, font=TempFont, text='[대기 현황 검색 APP]')
     MainText.pack()
     MainText.place(x=60)
 
 def InitInputLabel():
-    global NameLabel,MonthLabel,TypeLabel, AddrLabel
+    global Name1Label,Name2Label,MonthLabel, AddrLabel, realtap, monthtap, badtap
 
-    TempFont = font.Font(frame1, size=15, weight='bold', family = 'Consolas')
-    Text = Label(frame1, font=TempFont, text='측정소\n입력')
+    TempFont = font.Font(realtap, size=15, weight='bold', family = 'Consolas')
+    Text = Label(realtap, font=TempFont, text='측정소\n입력')
     Text.pack()
-    Text.place(x=15,y=100)
-    NameLabel = Entry(frame1, font=TempFont, width=15, borderwidth=12, relief='ridge')
-    NameLabel.pack()
-    NameLabel.place(x=110, y=100)
+    Text.place(x=15,y=10)
+    Name1Label = Entry(realtap, font=TempFont, width=15, borderwidth=12, relief='ridge')
+    Name1Label.pack()
+    Name1Label.place(x=100, y=10)
 
-    Text = Label(frame1, font=TempFont, text='월 입력\n(최근 3개월)')
+    Text = Label(realtap, font=TempFont, text='메일 주소')
     Text.pack()
-    Text.place(x=15,y=150)
-    MonthLabel = Entry(frame1, font=TempFont, width=8, borderwidth=12, relief='ridge')
-    MonthLabel.pack()
-    MonthLabel.place(x=150, y=150)
-
-    Text = Label(frame1, font=TempFont, text='출력 방법\n(시,일,월)')
-    Text.pack()
-    Text.place(x=15,y=200)
-    TypeLabel = Entry(frame1, font=TempFont, width=8, borderwidth=12, relief='ridge')
-    TypeLabel.pack()
-    TypeLabel.place(x=150, y=200)
-
-    Text = Label(frame1, font=TempFont, text='메일 주소')
-    Text.pack()
-    Text.place(x=15,y=260)
-    AddrLabel = Entry(frame1, width=20, borderwidth=10, relief='ridge')
+    Text.place(x=10,y=90)
+    AddrLabel = Entry(realtap, width=20, borderwidth=10, relief='ridge')
     AddrLabel.pack()
-    AddrLabel.place(x=110, y=255)
+    AddrLabel.place(x=110, y=84)
+
+    Text = Label(monthtap, font=TempFont, text='측정소\n입력')
+    Text.pack()
+    Text.place(x=15,y=10)
+    Name2Label = Entry(monthtap, font=TempFont, width=15, borderwidth=12, relief='ridge')
+    Name2Label.pack()
+    Name2Label.place(x=100, y=10)
+
+    Text = Label(monthtap, font=TempFont, text='월 입력(01~12)')
+    Text.pack()
+    Text.place(x=15,y=75)
+    MonthLabel = Entry(monthtap, font=TempFont, width=10, borderwidth=12, relief='ridge')
+    MonthLabel.pack()
+    MonthLabel.place(x=180, y=64)
+
+    Text = Label(monthtap, font=TempFont, text='메일 주소')
+    Text.pack()
+    Text.place(x=10,y=125)
+    AddrLabel = Entry(monthtap, width=20, borderwidth=10, relief='ridge')
+    AddrLabel.pack()
+    AddrLabel.place(x=110, y=119)
+
+    Text = Label(badtap, font=TempFont, text='메일 주소')
+    Text.pack()
+    Text.place(x=10,y=90)
+    AddrLabel = Entry(badtap, width=20, borderwidth=10, relief='ridge')
+    AddrLabel.pack()
+    AddrLabel.place(x=110, y=84)
+
+def InitListBox():
+    global monthtap, badtap, list1, list2
+    list1 = Listbox(monthtap,width=15,height=17, borderwidth=12, relief='ridge')
+    list1.pack()
+    list1.place(y=200)
+
+    SearchButton = Button(monthtap, text="조회",command = ListClick)
+    SearchButton.pack()
+    SearchButton.place(x=110, y=200)
+
+    list2 = Listbox(badtap,width=15,height=17, borderwidth=12, relief='ridge')
+    list2.pack()
+    list2.place(y=200)
+
+    SearchButton = Button(badtap, text="조회",command = ListClick)
+    SearchButton.pack()
+    SearchButton.place(x=110, y=200)
 
 def InitSearchButton():
-    TempFont = font.Font(frame1, size=12, weight='bold', family = 'Consolas')
-    SearchButton = Button(frame1, font = TempFont, text="검색",command = SearchButtonAction)
+    global realtap, monthtap, badtap
+
+    TempFont = font.Font(realtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(realtap, font = TempFont, text="검색",command = SearchButtonAction1)
     SearchButton.pack()
-    SearchButton.place(x=330, y=106)
+    SearchButton.place(x=310, y=16)
+
+    TempFont = font.Font(monthtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(monthtap, font = TempFont, text="검색",command = SearchButtonAction2)
+    SearchButton.pack()
+    SearchButton.place(x=310, y=16)
+
+    TempFont = font.Font(badtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(badtap, font = TempFont, text="검색",command = SearchButtonAction3)
+    SearchButton.pack()
+    SearchButton.place(x=170, y=10)
 
 def InitMailButton():
-    TempFont = font.Font(frame1, size=12, weight='bold', family = 'Consolas')
-    SearchButton = Button(frame1, font = TempFont, text="메일보내기",command = MailButtonAction)
+    global realtap, monthtap, badtap
+
+    TempFont = font.Font(realtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(realtap, font = TempFont, text="메일보내기",command = MailButtonAction)
     SearchButton.pack()
-    SearchButton.place(x=280, y=260)
+    SearchButton.place(x=280, y=85)
+
+    TempFont = font.Font(monthtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(monthtap, font = TempFont, text="메일보내기",command = MailButtonAction)
+    SearchButton.pack()
+    SearchButton.place(x=280, y=119)
+
+    TempFont = font.Font(badtap, size=12, weight='bold', family = 'Consolas')
+    SearchButton = Button(badtap, font = TempFont, text="메일보내기",command = MailButtonAction)
+    SearchButton.pack()
+    SearchButton.place(x=280, y=85)
+
+def InitNoteBook():
+    global note, realtap, monthtap, badtap
+
+    note = ttk.Notebook(window, width=380, height=500)
+
+    realtap = Frame(note)
+    note.add(realtap, text='실시간 검색')
+
+    monthtap = Frame(note)
+    note.add(monthtap, text='월별 검색')
+
+    badtap = Frame(note)
+    note.add(badtap, text='대기상태나쁨조회')
+
+    note.pack(expand=1, fill='both')
+    note.place(x=10, y=50)
 
 def RenderReady_realtime(database):
+    global RenderText1
+
     if len(database):
         for data in database:
-            data.print_data(RenderText)
+            data.print_data(RenderText1)
     else:
-        RenderText.insert(INSERT, "데이터가 없습니다.")
+        RenderText1.insert(INSERT, "데이터가 없습니다.")
 
 def RenderReady_time(database,month):
-    if len(database):
-        for data in database:
-            if data.month == month:
-                data.print_data(RenderText)
-    else:
-        RenderText.insert(INSERT, "데이터가 없습니다.")
+    pass
 
 def RenderReady_day(database):
-    if len(database):
-        for data in database:
-            data.print_data_dayaver(RenderText)
-    else:
-        RenderText.insert(INSERT, "데이터가 없습니다.")
+    pass
 
 def RenderReady_month(data):
-    data.print_data_monthaver(RenderText)
+    pass
 
 def InitRenderText():
-    global RenderText
+    global RenderText1, RenderText2, realtap, monthtap, badtap
 
-    RenderTextScrollbar = Scrollbar(window)
-    RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375, y=200)
-    TempFont = font.Font(frame1, size=10, family='Consolas')
-    RenderText = Text(frame1, width=49, height=20, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
-    RenderText.pack()
-    RenderText.place(x=10, y=300)
-    RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
-    RenderText.configure(state='disabled')
+    TempFont = font.Font(realtap, size=10, family='Consolas')
+    RenderText1 = Text(realtap, width=49, height=20, borderwidth=12, relief='ridge')
+    RenderText1.pack()
+    RenderText1.place(x=5, y=200)
+    RenderText1.configure(state='disabled')
 
-def InitSearchListBox():
-    global SearchListBox
+    RenderText2 = Text(monthtap, width=30, height=21, borderwidth=12, relief='ridge')
+    RenderText2.pack()
+    RenderText2.place(x=130, y=200)
+    RenderText2.configure(state='disabled')
 
-    ListBoxScrollbar = Scrollbar(frame1)
-    ListBoxScrollbar.pack()
-    ListBoxScrollbar.place(x=255, y=50)
+    RenderText3 = Text(badtap, width=30, height=21, borderwidth=12, relief='ridge')
+    RenderText3.pack()
+    RenderText3.place(x=130, y=200)
+    RenderText3.configure(state='disabled')
 
-    TempFont = font.Font(frame1, size=15, weight='bold', family='Consolas')
-    SearchListBox = Listbox(frame1, font=TempFont, activestyle='none', width=20, height=1, borderwidth=12, relief='ridge', yscrollcommand=ListBoxScrollbar.set)
+def SearchButtonAction1():
+    global canvas,maildatalist,mailflag,Name1Label,RenderText1,database,realtap
 
-    SearchListBox.insert(END, "실시간 검색")
-    SearchListBox.insert(END, "월별 검색")
-    SearchListBox.insert(END, "대기상태 나쁨 조회")
-    SearchListBox.pack()
-    SearchListBox.place(x=10, y=50)
-    ListBoxScrollbar.config(command=SearchListBox.yview)
-
-def SearchButtonAction():
-    global SearchListBox,canvas,maildatalist,mailflag
-
-    RenderText.configure(state='normal')
-    RenderText.delete(0.0, END)
-    Index = SearchListBox.curselection()[0]
-    if Index == 0:
-        mailflag = 0
-        maildatalist.clear()
-        realtime_search.realtime_search(service_key,NameLabel.get(),database)
-        RenderReady_realtime(database)
-        data = database[0]
-        maildatalist.append(data)
-        drawgraph(canvas,data)
-    elif Index == 1:
-        newlist = []
-        maildatalist.clear()
-        monthly_search.monthly_search(service_key,NameLabel.get(),database)
-        if TypeLabel.get() == '시':
-            mailflag = 1
-            RenderReady_time(database,MonthLabel.get())
-            for data in newlist:
-                if data.month == MonthLabel.get():
-                    maildatalist.append(data)
-        elif TypeLabel.get() == '일':
-            mailflag = 2
-            newlist = day_devide(database,MonthLabel.get())
-            for data in newlist:
-                maildatalist.append(data)
-            RenderReady_day(newlist)
-        elif TypeLabel.get() == '월':
-            mailflag = 3
-            data = month_devide(database,MonthLabel.get())
-            maildatalist.append(data)
-            RenderReady_month(data)
-    elif Index == 2:
-        mailflag = 4
-        maildatalist.clear()
-        badair_search.badair_search(service_key,database)
-        newdb = []
-        for name in database:
-            realtime_search.realtime_search(service_key,name,newdb)
-        RenderReady_realtime(newdb)
-        for data in newdb:
-            maildatalist.append(data)
-
+    RenderText1.configure(state='normal')
+    RenderText1.delete(0.0, END)
+    mailflag = 0
+    maildatalist.clear()
+    realtime_search.realtime_search(service_key,Name1Label.get(),database)
+    RenderReady_realtime(database)
+    data = database[0]
+    maildatalist.append(data)
+    drawgraph(canvas,data)
 
     database.clear()
-    RenderText.configure(state='disabled')
 
-def InitShowGraphButton():
-    TempFont = font.Font(frame1, size=12, weight='bold', family = 'Consolas')
-    button = Button(frame1, font=TempFont, text='그래프 보기', command=show_graph)
-    button.pack()
-    button.place(x=290, y=160)
+def SearchButtonAction2():
+    global canvas,maildatalist,mailflag,Name2Label,RenderText2,monthlyflag,list1,MonthLabel,database
+
+    list1.delete(0,'end')
+    newlist = []
+    database.clear()
+    maildatalist.clear()
+    monthly_search.monthly_search(service_key,Name2Label.get(),database)
+    if monthlyflag == 1:
+        mailflag = 1
+        RenderReady_time(database,MonthLabel.get())
+        for data in newlist:
+            if data.month == MonthLabel.get():
+                maildatalist.append(data)
+    elif monthlyflag == 2:
+        mailflag = 2
+        newlist = day_devide(database,MonthLabel.get())
+        for data in newlist:
+            maildatalist.append(data)
+            list1.insert('end', data.station)
+        RenderReady_day(newlist)
+    elif monthlyflag == 3:
+        mailflag = 3
+        data = month_devide(database,MonthLabel.get())
+        maildatalist.append(data)
+        RenderReady_month(data)
+        drawgraph(canvas, data)
+        list1.insert('end', data.station)
+
+def SearchButtonAction3():
+    global canvas,maildatalist,mailflag,list2
+
+    list2.delete(0,'end')
+    newdb = []
+    database.clear()
+    maildatalist.clear()
+    mailflag = 4
+    badair_search.badair_search(service_key,database)
+
+    for data in database:
+        realtime_search.realtime_search(service_key,data,newdb)
+        list2.insert('end',data)
+
+    print(newdb)
+    for data in newdb:
+        maildatalist.append(data)
+    print(maildatalist)
 
 def MailButtonAction():
     global maildatalist,mailflag
+
     if len(maildatalist) > 0:
         sendmail(senderAddr,password,AddrLabel.get(),maildatalist,mailflag)
-
     else:
         print('nodata')
 
+def InitRadioButton():
+    global monthtap
+    TempFont = font.Font(monthtap, size=13, family='Consolas')
 
-InitTopText()
+    rad1 = Radiobutton(monthtap, text='시간대', value=1, font=TempFont, command=SelectRadio1)
+    rad1.pack()
+    rad1.place(x=30,y=170)
+
+    rad2 = Radiobutton(monthtap, text='일 평균', value=2, font=TempFont, command=SelectRadio2)
+    rad2.pack()
+    rad2.place(x=135,y=170)
+
+    rad3 = Radiobutton(monthtap, text='월 평균', value=3, font=TempFont, command=SelectRadio3)
+    rad3.pack()
+    rad3.place(x=240,y=170)
+
+def SelectRadio1():
+    global monthlyflag
+
+    monthlyflag = 1
+
+def SelectRadio2():
+    global monthlyflag
+
+    monthlyflag = 2
+
+def SelectRadio3():
+    global monthlyflag
+
+    monthlyflag = 3
+
+def ListClick():
+    global list1,list2, RenderText2,RenderText3,maildatalist
+
+    data = list2.curselection()[0]
+    print(maildatalist)
+    maildatalist[data].print_data(RenderText3)
+
+
+InitNoteBook()
 InitInputLabel()
-InitSearchButton()
+InitTopText()
 InitMailButton()
 InitRenderText()
-InitSearchListBox()
-InitShowGraphButton()
+InitSearchButton()
+InitRadioButton()
+InitListBox()
 
 window.mainloop()

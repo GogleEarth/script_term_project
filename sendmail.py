@@ -21,16 +21,16 @@ def sendmail(senderAddr, password, add, datalist,flag):
 
         part = MIMEText(topic, 'html', _charset='UTF-8')
         msg.attach(part)
-        topic = '아황산 : ' + str(data.so2) + 'ppm\n'
+        topic = '아황산 : {0:.3f} ppm\n'.format(data.so2)
         part = MIMEText(topic, 'html', _charset='UTF-8')
         msg.attach(part)
-        topic = '일산화탄소 : ' + str(data.co) + 'ppm\n'
+        topic = '일산화탄소 : {0:.3f} ppm\n'.format(data.co)
         part = MIMEText(topic, 'html', _charset='UTF-8')
         msg.attach(part)
-        topic = '오존 : ' + str(data.o3) + 'ppm\n'
+        topic = '오존 : {0:.3f} ppm\n'.format(data.o3)
         part = MIMEText(topic, 'html', _charset='UTF-8')
         msg.attach(part)
-        topic = '이산화질소 : ' + str(data.no2) + 'ppm\n'
+        topic = '이산화질소 : {0:.3f} ppm\n'.format(data.no2)
         part = MIMEText(topic, 'html', _charset='UTF-8')
         msg.attach(part)
         topic = '미세먼지 : ' + str(data.pm10) + '㎍/㎥\n'
