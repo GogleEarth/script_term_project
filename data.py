@@ -18,7 +18,7 @@ class data:
         self.date = str(time[8]+time[9])
         self.hour = str(time[11]+time[12])
 
-    def print_data(self,RenderText):
+    def print_data(self, RenderText):
         RenderText.insert(INSERT,self.year + '년 ' + self.month + '월 ' + self.date + '일 ' + self.hour + '시 ' +  self.station + '의 대기 현황\n')
         RenderText.insert(INSERT,'아황산 : ' + str(self.so2) + 'ppm\n')
         RenderText.insert(INSERT,'일산화탄소 : ' + str(self.co) + 'ppm\n')

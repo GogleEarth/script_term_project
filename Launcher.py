@@ -230,17 +230,17 @@ def InitListBox():
     list1.pack()
     list1.place(y=200)
 
-    SearchButton = Button(monthtap, text="조회",command = ListClick)
-    SearchButton.pack()
-    SearchButton.place(x=110, y=200)
+    SearchButton1 = Button(monthtap, text="조회",command = ListClick1)
+    SearchButton1.pack()
+    SearchButton1.place(x=110, y=200)
 
     list2 = Listbox(badtap,width=15,height=17, borderwidth=12, relief='ridge')
     list2.pack()
     list2.place(y=200)
 
-    SearchButton = Button(badtap, text="조회",command = ListClick)
-    SearchButton.pack()
-    SearchButton.place(x=110, y=200)
+    SearchButton2 = Button(badtap, text="조회",command = ListClick2)
+    SearchButton2.pack()
+    SearchButton2.place(x=110, y=200)
 
 def InitSearchButton():
     global realtap, monthtap, badtap
@@ -314,23 +314,20 @@ def RenderReady_month(data):
     pass
 
 def InitRenderText():
-    global RenderText1, RenderText2, realtap, monthtap, badtap
+    global RenderText1, RenderText2, RenderText3, realtap, monthtap, badtap
 
     TempFont = font.Font(realtap, size=10, family='Consolas')
     RenderText1 = Text(realtap, width=49, height=20, borderwidth=12, relief='ridge')
     RenderText1.pack()
     RenderText1.place(x=5, y=200)
-    RenderText1.configure(state='disabled')
 
     RenderText2 = Text(monthtap, width=30, height=21, borderwidth=12, relief='ridge')
     RenderText2.pack()
     RenderText2.place(x=130, y=200)
-    RenderText2.configure(state='disabled')
 
     RenderText3 = Text(badtap, width=30, height=21, borderwidth=12, relief='ridge')
     RenderText3.pack()
     RenderText3.place(x=130, y=200)
-    RenderText3.configure(state='disabled')
 
 def SearchButtonAction1():
     global canvas,maildatalist,mailflag,Name1Label,RenderText1,database,realtap
@@ -390,11 +387,8 @@ def SearchButtonAction3():
         realtime_search.realtime_search(service_key,data,newdb)
         list2.insert('end',data)
 
-    print(newdb)
     for data in newdb:
         maildatalist.append(data)
-    print(maildatalist)
-
 def MailButtonAction():
     global maildatalist,mailflag
 
@@ -434,13 +428,20 @@ def SelectRadio3():
 
     monthlyflag = 3
 
-def ListClick():
-    global list1,list2, RenderText2,RenderText3,maildatalist
+def ListClick1():
+    global list1, RenderText2, maildatalist
 
+    data = list1.curselection()[0]
+    maildatalist[data].print_data(RenderText2)
+
+def ListClick2():
+    global list2, RenderText3, maildatalist, canvas
+
+    RenderText3.delete(1.0,END)
     data = list2.curselection()[0]
-    print(maildatalist)
+    print(data)
     maildatalist[data].print_data(RenderText3)
-
+    drawgraph(canvas,maildatalist[data])
 
 InitNoteBook()
 InitInputLabel()
