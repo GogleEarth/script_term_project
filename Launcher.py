@@ -22,7 +22,6 @@ mailflag = 0
 Days = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
 monthlyflag = 2
 
-
 frame2 = Frame(window, width=580, height=600)
 frame2.pack(side='right')
 frame2.propagate(0)
@@ -295,23 +294,10 @@ def InitNoteBook():
     note.pack(expand=1, fill='both')
     note.place(x=10, y=50)
 
-def RenderReady_realtime(database):
+def RenderReady_realtime(data):
     global RenderText1
 
-    if len(database):
-        for data in database:
-            data.print_data(RenderText1)
-    else:
-        RenderText1.insert(INSERT, "데이터가 없습니다.")
-
-def RenderReady_time(database,month):
-    pass
-
-def RenderReady_day(database):
-    pass
-
-def RenderReady_month(data):
-    pass
+    data.print_data(RenderText1)
 
 def InitRenderText():
     global RenderText1, RenderText2, RenderText3, realtap, monthtap, badtap
@@ -336,9 +322,8 @@ def SearchButtonAction1():
     RenderText1.delete(0.0, END)
     mailflag = 0
     maildatalist.clear()
-    realtime_search.realtime_search(service_key,Name1Label.get(),database)
-    RenderReady_realtime(database)
-    data = database[0]
+    data = realtime_search.realtime_search(service_key,Name1Label.get())
+    RenderReady_realtime(data)
     maildatalist.append(data)
     drawgraph(canvas,data)
 
@@ -348,49 +333,45 @@ def SearchButtonAction2():
     global canvas,maildatalist,mailflag,Name2Label,RenderText2,monthlyflag,list1,MonthLabel,database
 
     list1.delete(0,'end')
+    RenderText2.delete(1.0,END)
     newlist = []
     database.clear()
     maildatalist.clear()
     monthly_search.monthly_search(service_key,Name2Label.get(),database)
     if monthlyflag == 1:
         mailflag = 1
-        RenderReady_time(database,MonthLabel.get())
-        for data in newlist:
+        for data in database:
             if data.month == MonthLabel.get():
                 maildatalist.append(data)
+                list1.insert('end', data.date+'일'+data.hour+'시')
     elif monthlyflag == 2:
         mailflag = 2
         newlist = day_devide(database,MonthLabel.get())
         for data in newlist:
             maildatalist.append(data)
-            list1.insert('end', data.station)
-        RenderReady_day(newlist)
+            list1.insert('end', data.date+'일 평균')
     elif monthlyflag == 3:
         mailflag = 3
         data = month_devide(database,MonthLabel.get())
         maildatalist.append(data)
-        RenderReady_month(data)
-        drawgraph(canvas, data)
-        list1.insert('end', data.station)
+        list1.insert('end', data.month+'월 평균')
 
 def SearchButtonAction3():
     global canvas,maildatalist,mailflag,list2
 
     list2.delete(0,'end')
-    newdb = []
     database.clear()
     maildatalist.clear()
     mailflag = 4
     badair_search.badair_search(service_key,database)
 
     for data in database:
-        realtime_search.realtime_search(service_key,data,newdb)
         list2.insert('end',data)
 
-    for data in newdb:
-        maildatalist.append(data)
 def MailButtonAction():
     global maildatalist,mailflag
+
+    print(maildatalist)
 
     if len(maildatalist) > 0:
         sendmail(senderAddr,password,AddrLabel.get(),maildatalist,mailflag)
@@ -429,19 +410,39 @@ def SelectRadio3():
     monthlyflag = 3
 
 def ListClick1():
-    global list1, RenderText2, maildatalist
+    global list1, RenderText2, maildatalist, monthlyflag
 
+    RenderText2.delete(1.0,END)
     data = list1.curselection()[0]
-    maildatalist[data].print_data(RenderText2)
+    if monthlyflag == 1:
+        maildatalist[data].print_data(RenderText2)
+    elif monthlyflag == 2:
+        maildatalist[data].print_data_dayaver(RenderText2)
+    elif monthlyflag == 3:
+        maildatalist[data].print_data_monthaver(RenderText2)
+
+    drawgraph(canvas, maildatalist[data])
 
 def ListClick2():
-    global list2, RenderText3, maildatalist, canvas
+    global list2, RenderText3, maildatalist, canvas, database
 
     RenderText3.delete(1.0,END)
     data = list2.curselection()[0]
     print(data)
-    maildatalist[data].print_data(RenderText3)
-    drawgraph(canvas,maildatalist[data])
+
+    info = realtime_search.realtime_search(service_key,database[data])
+    info.print_data(RenderText3)
+
+    flag = True
+    for data in maildatalist:
+        if info.station == data.station:
+            flag = False
+
+    if flag:
+        maildatalist.append(info)
+
+    drawgraph(canvas,info)
+
 
 InitNoteBook()
 InitInputLabel()
