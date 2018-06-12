@@ -5,7 +5,7 @@ from data import *
 import realtime_search
 import monthly_search
 import badair_search
-from sendmail import *
+import sendmail
 
 window = Tk()
 window.title("대기 현황 APP")
@@ -13,8 +13,6 @@ window.geometry("1000x600")
 window.resizable(False, False)
 
 service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
-senderAddr = "dkekfps1@gmail.com"
-password = "ss073508!!"
 
 database = []
 maildatalist = []
@@ -178,7 +176,8 @@ def InitTopText():
     MainText.place(x=60)
 
 def InitInputLabel():
-    global Name1Label,Name2Label,MonthLabel, AddrLabel, realtap, monthtap, badtap
+    global Name1Label,Name2Label,MonthLabel, AddrLabel1, AddrLabel2, AddrLabel3\
+        , realtap, monthtap, badtap
 
     TempFont = font.Font(realtap, size=15, weight='bold', family = 'Consolas')
     Text = Label(realtap, font=TempFont, text='측정소\n입력')
@@ -191,9 +190,9 @@ def InitInputLabel():
     Text = Label(realtap, font=TempFont, text='메일 주소')
     Text.pack()
     Text.place(x=10,y=90)
-    AddrLabel = Entry(realtap, width=20, borderwidth=10, relief='ridge')
-    AddrLabel.pack()
-    AddrLabel.place(x=110, y=84)
+    AddrLabel1 = Entry(realtap, width=20, borderwidth=10, relief='ridge')
+    AddrLabel1.pack()
+    AddrLabel1.place(x=110, y=84)
 
     Text = Label(monthtap, font=TempFont, text='측정소\n입력')
     Text.pack()
@@ -212,16 +211,16 @@ def InitInputLabel():
     Text = Label(monthtap, font=TempFont, text='메일 주소')
     Text.pack()
     Text.place(x=10,y=125)
-    AddrLabel = Entry(monthtap, width=20, borderwidth=10, relief='ridge')
-    AddrLabel.pack()
-    AddrLabel.place(x=110, y=119)
+    AddrLabel2 = Entry(monthtap, width=20, borderwidth=10, relief='ridge')
+    AddrLabel2.pack()
+    AddrLabel2.place(x=110, y=119)
 
     Text = Label(badtap, font=TempFont, text='메일 주소')
     Text.pack()
     Text.place(x=10,y=90)
-    AddrLabel = Entry(badtap, width=20, borderwidth=10, relief='ridge')
-    AddrLabel.pack()
-    AddrLabel.place(x=110, y=84)
+    AddrLabel3 = Entry(badtap, width=20, borderwidth=10, relief='ridge')
+    AddrLabel3.pack()
+    AddrLabel3.place(x=110, y=84)
 
 def InitListBox():
     global monthtap, badtap, list1, list2
@@ -302,7 +301,6 @@ def RenderReady_realtime(data):
 def InitRenderText():
     global RenderText1, RenderText2, RenderText3, realtap, monthtap, badtap
 
-    TempFont = font.Font(realtap, size=10, family='Consolas')
     RenderText1 = Text(realtap, width=49, height=20, borderwidth=12, relief='ridge')
     RenderText1.pack()
     RenderText1.place(x=5, y=200)
@@ -369,14 +367,23 @@ def SearchButtonAction3():
         list2.insert('end',data)
 
 def MailButtonAction():
-    global maildatalist,mailflag
+    global maildatalist,mailflag,AddrLabel1, AddrLabel2, AddrLabel3
+
+    senderAddr = "dkekfps1@gmail.com"
+    password = "ss073508!!"
+    recAddr = ''
+
+    if mailflag == 0:
+        recAddr = AddrLabel1.get()
+    elif mailflag == 4:
+        recAddr = AddrLabel3.get()
+    else:
+        recAddr = AddrLabel2.get()
 
     print(maildatalist)
 
     if len(maildatalist) > 0:
-        sendmail(senderAddr,password,AddrLabel.get(),maildatalist,mailflag)
-    else:
-        print('nodata')
+        sendmail.send_mail(senderAddr, password, recAddr, maildatalist, mailflag)
 
 def InitRadioButton():
     global monthtap

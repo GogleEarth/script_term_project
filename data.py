@@ -44,3 +44,13 @@ class data:
         RenderText.insert(INSERT, '이산화질소 : {0:.3f} ppm\n'.format(self.no2))
         RenderText.insert(INSERT, '미세먼지 : ' + str(self.pm10) + '㎍/㎥\n')
         RenderText.insert(INSERT, '초미세먼지 : ' + str(self.pm25) + '㎍/㎥\n\n')
+
+    def __str__(self):
+        topic = self.year + '년 ' + self.month + '월 ' + self.date + '일 ' + self.hour + '시 ' + self.station + '의 대기 현황\n'
+        topic += '아황산 : ' + str(self.so2) + 'ppm\n'
+        topic += '일산화탄소 : ' + str(self.co) + 'ppm\n'
+        topic += '오존 : ' + str(self.o3) + 'ppm\n'
+        topic += '이산화질소 : ' + str(self.no2) + 'ppm\n'
+        topic += '미세먼지 : ' + str(self.pm10) + '㎍/㎥\n'
+        topic += '초미세먼지 : ' + str(self.pm25) + '㎍/㎥\n\n'
+        return topic
