@@ -60,7 +60,7 @@ def drawgraph(canvas,data):
 
     o3coord = 235,400,235,400-data.o3*3000
     o3line = canvas.create_line(o3coord, width=15, fill='yellow')
-    o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.so2))
+    o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.o3))
     o3valuelabel.pack()
     o3valuelabel.place(x=210, y=400-data.o3*3000-30)
 
