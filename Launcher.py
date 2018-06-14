@@ -46,41 +46,85 @@ def drawgraph(canvas,data):
     namelabel.pack()
     namelabel.place(x=30, y=500)
 
-    so2coord = 55,400,55,400-data.so2*3000
-    so2line = canvas.create_line(so2coord, width=15, fill='yellow')
+    so2coord = 55,400,55,400-data.so2*8000
+    if data.so2 <= 0.02:
+        so2line = canvas.create_line(so2coord, width=15, fill='blue')
+    elif data.so2 <= 0.05:
+        so2line = canvas.create_line(so2coord, width=15, fill='green')
+    elif data.so2 <= 0.15:
+        so2line = canvas.create_line(so2coord, width=15, fill='orange')
+    else:
+        so2line = canvas.create_line(so2coord, width=15, fill='red')
     so2valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.so2))
     so2valuelabel.pack()
-    so2valuelabel.place(x=30, y=400-data.so2*3000-30)
+    so2valuelabel.place(x=30, y=400-data.so2*8000-30)
 
-    cocoord = 145,400,145,400-data.co*300
-    coline = canvas.create_line(cocoord, width=15, fill='yellow')
+    cocoord = 145,400,145,400-data.co*200
+    if data.co <= 2.0:
+        coline = canvas.create_line(cocoord, width=15, fill='blue')
+    elif data.co <= 9.0:
+        coline = canvas.create_line(cocoord, width=15, fill='green')
+    elif data.co <= 15.0:
+        coline = canvas.create_line(cocoord, width=15, fill='orange')
+    else:
+        coline = canvas.create_line(cocoord, width=15, fill='red')
     covaluelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.co))
     covaluelabel.pack()
-    covaluelabel.place(x=125, y=400-data.co*300-30)
+    covaluelabel.place(x=125, y=400-data.co*200-30)
 
-    o3coord = 235,400,235,400-data.o3*3000
-    o3line = canvas.create_line(o3coord, width=15, fill='yellow')
+    o3coord = 235,400,235,400-data.o3*1500
+    if data.o3 <= 0.03:
+        o3line = canvas.create_line(o3coord, width=15, fill='blue')
+    elif data.o3 <= 0.09:
+        o3line = canvas.create_line(o3coord, width=15, fill='green')
+    elif data.o3 <= 0.15:
+        o3line = canvas.create_line(o3coord, width=15, fill='orange')
+    else:
+        o3line = canvas.create_line(o3coord, width=15, fill='red')
     o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.o3))
     o3valuelabel.pack()
-    o3valuelabel.place(x=210, y=400-data.o3*3000-30)
+    o3valuelabel.place(x=210, y=400-data.o3*1500-30)
 
-    no2coord = 325,400,325,400-data.no2*3000
-    no2line = canvas.create_line(no2coord, width=15, fill='yellow')
+    no2coord = 325,400,325,400-data.no2*2000
+    if data.no2 <= 0.03:
+        no2line = canvas.create_line(no2coord, width=15, fill='blue')
+    elif data.no2 <= 0.06:
+        no2line = canvas.create_line(no2coord, width=15, fill='green')
+    elif data.no2 <= 0.2:
+        no2line = canvas.create_line(no2coord, width=15, fill='orange')
+    else:
+        no2line = canvas.create_line(no2coord, width=15, fill='red')
+
     no2valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.no2))
     no2valuelabel.pack()
-    no2valuelabel.place(x=300, y=400-data.no2*3000-30)
+    no2valuelabel.place(x=300, y=400-data.no2*2000-30)
 
-    pm10coord = 415,400,415,400-data.pm10
-    pm10line = canvas.create_line(pm10coord, width=15, fill='red')
+    pm10coord = 415,400,415,400-data.pm10*2
+    if data.pm10 <= 30:
+        pm10line = canvas.create_line(pm10coord, width=15, fill='blue')
+    elif data.pm10 <= 80:
+        pm10line = canvas.create_line(pm10coord, width=15, fill='green')
+    elif data.pm10 <= 150:
+        pm10line = canvas.create_line(pm10coord, width=15, fill='orange')
+    else:
+        pm10line = canvas.create_line(pm10coord, width=15, fill='red')
+
     pm10valuelabel = Label(canvas, font=TempFont, text=data.pm10)
     pm10valuelabel.pack()
-    pm10valuelabel.place(x=405, y=400-data.pm10-30)
+    pm10valuelabel.place(x=405, y=400-data.pm10*2-30)
 
-    pm25coord = 505,400,505,400-data.pm25
-    pm25line = canvas.create_line(pm25coord, width=15, fill='red')
+    pm25coord = 505,400,505,400-data.pm25*2
+    if data.pm25 <= 15:
+        pm25line = canvas.create_line(pm25coord, width=15, fill='blue')
+    elif data.pm25 <= 35:
+        pm25line = canvas.create_line(pm25coord, width=15, fill='green')
+    elif data.pm25 <= 75:
+        pm25line = canvas.create_line(pm25coord, width=15, fill='orange')
+    else:
+        pm25line = canvas.create_line(pm25coord, width=15, fill='red')
     pm25valuelabel = Label(canvas, font=TempFont, text=data.pm25)
     pm25valuelabel.pack()
-    pm25valuelabel.place(x=495, y=400-data.pm25-30)
+    pm25valuelabel.place(x=495, y=400-data.pm25*2-30)
 
     so2label = Label(canvas, font=TempFont, text='아황산')
     so2label.pack()
@@ -372,9 +416,24 @@ def ListClick2():
 
     RenderText3.delete(1.0,END)
     data = list2.curselection()[0]
+    print(database)
     print(data)
 
-    info = realtime_search.realtime_search(service_key,database[data])
+    flag = True
+    for d in maildatalist:
+        if d.station == database[data]:
+            flag = False
+
+    global info
+    if flag:
+        info = realtime_search.realtime_search(service_key,database[data])
+        print("new")
+    else:
+        for d in maildatalist:
+            if d.station == database[data]:
+                info = d
+                print("old")
+
     info.print_data(RenderText3)
 
     flag = True
