@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import font
 from data import *
+from divide import *
 import realtime_search
 import monthly_search
 import badair_search
@@ -17,7 +18,6 @@ service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmD
 database = []
 maildatalist = []
 mailflag = 0
-Days = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31']
 monthlyflag = 2
 
 frame2 = Frame(window, width=580, height=600)
@@ -60,7 +60,7 @@ def drawgraph(canvas,data):
 
     o3coord = 235,400,235,400-data.o3*3000
     o3line = canvas.create_line(o3coord, width=15, fill='yellow')
-    o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.so2))
+    o3valuelabel = Label(canvas, font=TempFont, text='{0:.3f}'.format(data.o3))
     o3valuelabel.pack()
     o3valuelabel.place(x=210, y=400-data.o3*3000-30)
 
@@ -105,69 +105,6 @@ def drawgraph(canvas,data):
     pm25label = Label(canvas, font=TempFont, text='초미세먼지')
     pm25label.pack()
     pm25label.place(x=465, y=400)
-
-def month_devide(database,month):
-    name = ''
-    time = ''
-    so2 = 0
-    co = 0
-    o3 = 0
-    no2 = 0
-    pm10 = 0
-    pm25 = 0
-    cnt = 0
-    for ele in database:
-        if ele.month == month:
-            time = ele.year+'-'+ele.month+'-'+ele.date+'-'+'평균'
-            name = ele.station
-            so2 += ele.so2
-            co += ele.co
-            o3 += ele.o3
-            no2 += ele.no2
-            pm10 += ele.pm10
-            pm25 += ele.pm25
-            cnt += 1
-    if cnt > 0:
-        res = data(name,time,so2/cnt,co/cnt,o3/cnt,no2/cnt,pm10/cnt,pm25/cnt)
-        return res
-
-def day_devide(database,month):
-    global Days
-    name = ''
-    time = ''
-    so2 = 0
-    co = 0
-    o3 = 0
-    no2 = 0
-    pm10 = 0
-    pm25 = 0
-    cnt = 0
-    res = []
-    for day in Days:
-        for ele in database:
-            if ele.date == day and ele.month == month:
-                time = ele.year+'-'+ele.month+'-'+ele.date+'-'+'평균'
-                name = ele.station
-                so2 += ele.so2
-                co += ele.co
-                o3 += ele.o3
-                no2 += ele.no2
-                pm10 += ele.pm10
-                pm25 += ele.pm25
-                cnt += 1
-
-        if cnt > 0:
-            res.append(data(name,time,so2/cnt,co/cnt,o3/cnt,no2/cnt,pm10/cnt,pm25/cnt))
-            time = ''
-            so2 = 0
-            co = 0
-            o3 = 0
-            no2 = 0
-            pm10 = 0
-            pm25 = 0
-            cnt = 0
-
-    return res
 
 def InitTopText():
     TempFont = font.Font(window, size=20, weight='bold', family='consolas')
