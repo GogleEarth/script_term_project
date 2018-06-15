@@ -1,5 +1,10 @@
 from distutils.core import setup
 
-setup(name='대기현황app',version='beta',
-      classifiers=['script_term_project'],
-      packages=['script_term_project'])
+
+files = ['Spammodule.pyd']
+
+setup(name='Atmosphere',
+version='1.0',
+packages=['script_term_project'],
+package_data = {'script_term_project' : files },
+)

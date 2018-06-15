@@ -9,25 +9,6 @@ import badair_search
 import sendmail
 import Spammodule
 
-window = Tk()
-window.title("대기 현황 APP")
-window.geometry("1000x600")
-window.resizable(False, False)
-
-service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
-
-database = []
-maildatalist = []
-mailflag = 0
-monthlyflag = 2
-
-frame2 = Frame(window, width=580, height=600)
-frame2.pack(side='right')
-frame2.propagate(0)
-
-canvas = Canvas(frame2, width=540, height=400, bg='white', borderwidth='10', relief='ridge')
-canvas.pack()
-canvas.place(x=0, y=10)
 
 def drawgraph(canvas,data):
     global frame_on,frame2
@@ -448,14 +429,40 @@ def ListClick2():
 
     drawgraph(canvas,info)
 
+def Run():
+    global window, service_key, database, maildatalist, mailflag, monthlyflag
+    global frame2, canvas
 
-InitNoteBook()
-InitInputLabel()
-InitTopText()
-InitMailButton()
-InitRenderText()
-InitSearchButton()
-InitRadioButton()
-InitListBox()
+    window = Tk()
+    window.title("대기 현황 APP")
+    window.geometry("1000x600")
+    window.resizable(False, False)
 
-window.mainloop()
+    service_key = 'fD%2FcMGFxBktwTG9%2BdUNuSZG%2FCnhfGOUAeEXyQUz6woSWm3JNpQazLAdKEmDuuYd7XZAmOnf6kWcWt49MrbnqcQ%3D%3D'
+
+    database = []
+    maildatalist = []
+    mailflag = 0
+    monthlyflag = 2
+
+    frame2 = Frame(window, width=580, height=600)
+    frame2.pack(side='right')
+    frame2.propagate(0)
+
+    canvas = Canvas(frame2, width=540, height=400, bg='white', borderwidth='10', relief='ridge')
+    canvas.pack()
+    canvas.place(x=0, y=10)
+
+    InitNoteBook()
+    InitInputLabel()
+    InitTopText()
+    InitMailButton()
+    InitRenderText()
+    InitSearchButton()
+    InitRadioButton()
+    InitListBox()
+
+    window.mainloop()
+
+if __name__ == '__main__':
+    Run()
