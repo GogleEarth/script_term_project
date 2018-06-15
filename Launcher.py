@@ -7,6 +7,7 @@ import realtime_search
 import monthly_search
 import badair_search
 import sendmail
+import Spammodule
 
 window = Tk()
 window.title("대기 현황 APP")
@@ -350,8 +351,9 @@ def SearchButtonAction3():
 def MailButtonAction():
     global maildatalist,mailflag,AddrLabel1, AddrLabel2, AddrLabel3
 
-    senderAddr = "dkekfps1@gmail.com"
-    password = "ss073508!!"
+    senderAddr = Spammodule.getGmailId()
+    password = Spammodule.getGmailPass()
+
     recAddr = ''
 
     if mailflag == 0:
